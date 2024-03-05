@@ -1,3 +1,4 @@
+import { Button, Input } from '@nextui-org/react'
 import { Task } from '@renderer/Task'
 import { ReactElement, useState } from 'react'
 
@@ -20,8 +21,8 @@ function Form({ setTarefas, tarefas }: FormProps): ReactElement {
   return (
     <>
       <label>Nome da Tarefa</label>
-      <input type="text" onChange={(e) => setTarefa(e.target.value)} name="title" />
-      <button onClick={() => addTarefa()}>Salvar tarefa</button>
+      <Input type="text" onChange={(e) => setTarefa(e.target.value)} name="title" />
+      <Button color='primary' onClick={() => addTarefa()}>Salvar tarefa</Button>
     </>
   )
 }
