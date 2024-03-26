@@ -1,27 +1,26 @@
 import { Button, Input } from '@nextui-org/react'
-import { Task } from '@renderer/Task'
+import API from '@renderer/utils/API'
+
 import { ReactElement, useState } from 'react'
 
 type FormProps = {
-  setTarefas: React.Dispatch<React.SetStateAction<Task[]>>
-  tarefas: Task[]
+  reload: () => Promise<void>
 }
 
-function Form({ setTarefas, tarefas }: FormProps): ReactElement {
+function Form({ reload }: FormProps): ReactElement {
   const [tarefa, setTarefa] = useState<string>('')
 
-  function addTarefa(): void {
-    if (tarefa.length) {
-      const newTarefas = [...tarefas]
-      newTarefas.unshift({ title: tarefa, status: 'ACTIVE' })
-      setTarefas(newTarefas)
-    }
+  async function addTarefa(): Promise<void> {
+    const {data, error} = await API.post('/tasks',{ status: 'ACTIVE', title: tarefa})
+    console.log({data, error})
+    setTarefa('')
+    reload()
   }
 
   return (
     <>
-      <label>Nome da Tarefa</label>
-      <Input type="text" onChange={(e) => setTarefa(e.target.value)} name="title" />
+      <label htmlFor='tarefa'>Nome da Tarefa</label>
+      <Input id='tarefa' type="text" value={tarefa} onChange={(e) => setTarefa(e.target.value)} name="tarefa" />
       <Button color='primary' onClick={() => addTarefa()}>Salvar tarefa</Button>
     </>
   )
